@@ -1,0 +1,11 @@
+services:
+  front:
+    build: ./studybed-app
+    command: "npm run start"
+    environment:
+      - PORT=4200
+    volumes:
+      - ./studybed-app:/usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - "4200:4200"

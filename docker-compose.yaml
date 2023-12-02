@@ -4,8 +4,31 @@ services:
     command: "npm run start"
     environment:
       - PORT=4200
+      - HOST=0.0.0.0
     volumes:
       - ./studybed-app:/usr/src/app
       - /usr/src/app/node_modules/
     ports:
       - "4200:4200"
+
+  backend:
+    build: ./studybed-api
+    command: "npm run start"
+    environment:
+      - PORT=3000
+      - HOST=0.0.0.0
+    volumes:
+      - ./studybed-api:/usr/src/app
+      - /usr/src/app/node_modules/
+      - markdowndb:/usr/db/markdowndb
+    ports:
+      - "3000:3000"
+
+volumes:
+  markdowndb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./markdown-db
+

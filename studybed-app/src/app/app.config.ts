@@ -1,5 +1,5 @@
 import { ApplicationConfig } from "@angular/core";
-import { provideHttpClient, HttpClient } from "@angular/common/http";
+import { provideHttpClient, HttpClient, withFetch } from "@angular/common/http";
 import { provideRouter } from "@angular/router";
 import { provideMarkdown } from "ngx-markdown";
 
@@ -10,7 +10,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     provideMarkdown({
       loader: HttpClient,
     }),

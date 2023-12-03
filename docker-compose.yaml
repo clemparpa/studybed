@@ -17,18 +17,12 @@ services:
     environment:
       - PORT=3000
       - HOST=0.0.0.0
+      - MARKDOWN_DB_PATH=file:/usr/db/markdowndb/markdown.db
     volumes:
       - ./studybed-api:/usr/src/app
       - /usr/src/app/node_modules/
-      - markdowndb:/usr/db/markdowndb
+      - ./markdowndb:/usr/db/markdowndb
     ports:
       - "3000:3000"
 
-volumes:
-  markdowndb:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./markdown-db
 

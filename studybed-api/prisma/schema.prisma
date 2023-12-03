@@ -18,9 +18,9 @@ model file_tags {
 
 model files {
   id                      String      @id @map("_id")
-  file_path               String
+  file_path               String      @unique()
   extension               String
-  url_path                String?
+  url_path                String?     @unique()
   filetype                String?
   metadata                String?
   file_tags               file_tags[]

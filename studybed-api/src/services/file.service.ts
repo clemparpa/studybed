@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { FileModel } from 'src/models/file.model';
 import { ZodObject } from 'zod';
+import * as matter from 'gray-matter';
 
 @Injectable()
 export class FileService {
@@ -19,7 +20,7 @@ export class FileService {
   public withContent(file: FileModel<any>, rootPath: string) {
     return {
       ...file,
-      content: readFileSync(join(rootPath, file.file_path).replace('\\', '/')).toString(),
+      content: matter(readFileSync(join(rootPath, file.file_path).replace('\\', '/')).toString()).content,
     };
   }
 }

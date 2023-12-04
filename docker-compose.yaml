@@ -16,7 +16,7 @@ services:
 
   backend:
     build: ./studybed-api
-    command: "npm run start"
+    command: "npm run start:dev"
     environment:
       - PORT=3000
       - HOST=0.0.0.0

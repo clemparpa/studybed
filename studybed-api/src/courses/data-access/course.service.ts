@@ -14,8 +14,9 @@ export class CourseService {
   private rootPath: string =
     process.env.MARKDOWN_DB_ROOT ?? 'C:/Users/talal/Desktop/CLIENT_PROJECTS/studybed/markdowndb';
 
-  public getCourses = (): Observable<FileWithTags[]> =>
-    from(this.prisma.files.findMany({ include: { file_tags: true } }));
+  public getCourses(): Observable<FileWithTags[]> {
+    return from(this.prisma.files.findMany({ include: { file_tags: true } }));
+  }
 
   public getCourseWithContent(where: Prisma.filesWhereUniqueInput): Observable<FileWithContent> {
     return this.getCourseUniqueWhere(where).pipe(map(this.withFileContent));

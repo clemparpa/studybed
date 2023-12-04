@@ -1,11 +1,12 @@
 import { Controller, Get, Query, UseFilters, Post, Body } from '@nestjs/common';
 import { CourseService } from './data-access/course.service';
-import { createPrismaFilter } from 'src/exception-filters/create-filter';
+import { createPrismaFilter } from 'src/exception-filters/prisma/create-filter';
 import { Prisma } from '@prisma/client';
 import { TagFilter } from './interfaces/tag-filter.type';
+import { ZodExceptionFilter } from 'src/exception-filters/zod.exception-filter';
 
 @Controller('course')
-@UseFilters(...createPrismaFilter('files'))
+@UseFilters(...createPrismaFilter('files'), new ZodExceptionFilter())
 export class CourseController {
   constructor(private courseService: CourseService) {}
 

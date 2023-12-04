@@ -1,37 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma.service';
 import { from, Observable, map } from 'rxjs';
-import { files, Prisma } from '@prisma/client';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { Prisma } from '@prisma/client';
 import { TagFilter } from '../interfaces/tag-filter.type';
-import { FileWithContent, FileWithTags } from '../interfaces/file.type';
+import { FileService } from 'src/services/file.service';
+import { CourseMetaDataSchema } from '../models/course-metadata.model';
+import { ContentCourseModel, CourseModel } from '../models/course.model';
+import { FileWithTagsModel } from 'src/models/file.model';
 
 @Injectable()
 export class CourseService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private file: FileService,
+  ) {}
 
   private rootPath: string =
     process.env.MARKDOWN_DB_ROOT ?? 'C:/Users/talal/Desktop/CLIENT_PROJECTS/studybed/markdowndb';
 
-  public getCourses(): Observable<FileWithTags[]> {
-    return from(this.prisma.files.findMany({ include: { file_tags: true } }));
+  public getCourses(): Observable<CourseModel[]> {
+    return from(this.prisma.files.findMany()).pipe(
+      map((files) => files.map((file) => this.file.withMetaData(file, CourseMetaDataSchema))),
+    );
   }
 
-  public getCourseWithContent(where: Prisma.filesWhereUniqueInput): Observable<FileWithContent> {
-    return this.getCourseUniqueWhere(where).pipe(map(this.withFileContent));
+  public getCourseWithContent(where: Prisma.filesWhereUniqueInput): Observable<ContentCourseModel> {
+    return this.getCourseUniqueWhere(where).pipe(
+      map((file) => this.file.withMetaData(file, CourseMetaDataSchema)),
+      map((file) => this.file.withContent(file, this.rootPath)),
+    );
   }
 
-  public getCourseByTags({ type, tags }: TagFilter): Observable<FileWithTags[]> {
-    return this.getCoursesWhere({ file_tags: { [type]: { tags: { name: { in: tags } } } } });
+  public getCourseByTags({ type, tags }: TagFilter): Observable<CourseModel[]> {
+    return this.getCoursesWhere({ file_tags: { [type]: { tags: { name: { in: tags } } } } }).pipe(
+      map((files) => files.map((file) => this.file.withMetaData(file, CourseMetaDataSchema))),
+    );
   }
 
-  private withFileContent = (file: files): FileWithContent => ({
-    ...file,
-    content: readFileSync(join(this.rootPath, file.file_path).replace('\\', '/')).toString(),
-  });
-
-  private getCourseUniqueWhere = (where: Prisma.filesWhereUniqueInput): Observable<FileWithTags> =>
+  private getCourseUniqueWhere = (where: Prisma.filesWhereUniqueInput): Observable<FileWithTagsModel<string | null>> =>
     from(
       this.prisma.files.findUniqueOrThrow({
         where,
@@ -41,7 +47,7 @@ export class CourseService {
       }),
     );
 
-  private getCoursesWhere = (where: Prisma.filesWhereInput): Observable<FileWithTags[]> =>
+  private getCoursesWhere = (where: Prisma.filesWhereInput): Observable<FileWithTagsModel<string | null>[]> =>
     from(
       this.prisma.files.findMany({
         include: {

@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { FileModel } from 'src/models/file.model';
 import { ZodObject } from 'zod';
 
 @Injectable()
 export class FileService {
-  public parseMetaData<MetaData>(
-    { metadata }: { metadata: string | null },
+  public withMetaData<MetaData>(
+    file: FileModel<string | null>,
     schema: ZodObject<any, any, any, MetaData, any>,
-  ): MetaData {
-    return schema.parse(metadata ? JSON.parse(metadata) : {});
+  ): FileModel<MetaData> {
+    return {
+      ...file,
+      metadata: schema.parse(file.metadata ? JSON.parse(file.metadata) : {}),
+    };
   }
 
-  public readContent({ file_path }: { file_path: string }, rootPath: string) {
-    return readFileSync(join(rootPath, file_path).replace('\\', '/')).toString();
+  public withContent(file: FileModel<any>, rootPath: string) {
+    return {
+      ...file,
+      content: readFileSync(join(rootPath, file.file_path).replace('\\', '/')).toString(),
+    };
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { catchError } from "rxjs";
+import { environment } from "../environment/environment";
 
 @Injectable({
   providedIn: "root",
@@ -8,10 +8,16 @@ import { catchError } from "rxjs";
 export class CourseService {
   private http = inject(HttpClient);
 
-  private api_host = "http://localhost:3000/course";
+  private apiPath = environment.BACKEND_API;
+  private coursePath = "course";
 
   public getCourses() {
-    console.log("request");
-    return this.http.get(this.api_host);
+    return this.http.get(`${this.apiPath}/${this.coursePath}`);
+  }
+
+  public getCourseByUrl(url_path: string) {
+    return this.http.get(`${this.apiPath}/${this.coursePath}/where`, {
+      params: { url_path },
+    });
   }
 }

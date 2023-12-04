@@ -5,6 +5,7 @@ services:
     environment:
       - PORT=4200
       - HOST=0.0.0.0
+      - BACKEND_API=http://localhost:3000
     volumes:
       - ./studybed-app:/usr/src/app
       - /usr/src/app/node_modules/
@@ -20,7 +21,7 @@ services:
       - PORT=3000
       - HOST=0.0.0.0
       - MARKDOWN_DB_PATH=file:/usr/db/markdowndb/markdown.db
-      - MARKDOWN_DB_ROOT=/usr/db/markdowndb
+      - MARKDOWN_DB_ROOT=/usr/db/markdowndb 
 
     volumes:
       - ./studybed-api:/usr/src/app

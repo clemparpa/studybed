@@ -10,6 +10,8 @@ services:
       - /usr/src/app/node_modules/
     ports:
       - "4200:4200"
+    depends_on:
+      - backend
 
   backend:
     build: ./studybed-api
@@ -18,6 +20,8 @@ services:
       - PORT=3000
       - HOST=0.0.0.0
       - MARKDOWN_DB_PATH=file:/usr/db/markdowndb/markdown.db
+      - MARKDOWN_DB_ROOT=/usr/db/markdowndb
+
     volumes:
       - ./studybed-api:/usr/src/app
       - /usr/src/app/node_modules/

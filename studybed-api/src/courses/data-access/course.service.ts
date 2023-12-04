@@ -11,20 +11,23 @@ import { FileWithContent, FileWithTags } from '../interfaces/file.type';
 export class CourseService {
   constructor(private prisma: PrismaService) {}
 
-  private rawPath: string = 'C:/Users/talal/Desktop/CLIENT_PROJECTS/studybed/markdowndb';
+  private rootPath: string =
+    process.env.MARKDOWN_DB_ROOT ?? 'C:/Users/talal/Desktop/CLIENT_PROJECTS/studybed/markdowndb';
 
   public getCourses = (): Observable<FileWithTags[]> =>
     from(this.prisma.files.findMany({ include: { file_tags: true } }));
 
-  public getCourseWithContent = (where: Prisma.filesWhereUniqueInput): Observable<FileWithContent> =>
-    this.getCourseUniqueWhere(where).pipe(map(this.withFileContent));
+  public getCourseWithContent(where: Prisma.filesWhereUniqueInput): Observable<FileWithContent> {
+    return this.getCourseUniqueWhere(where).pipe(map(this.withFileContent));
+  }
 
-  public getCourseByTags = ({ type, tags }: TagFilter): Observable<FileWithTags[]> =>
-    this.getCoursesWhere({ file_tags: { [type]: { tags: { name: { in: tags } } } } });
+  public getCourseByTags({ type, tags }: TagFilter): Observable<FileWithTags[]> {
+    return this.getCoursesWhere({ file_tags: { [type]: { tags: { name: { in: tags } } } } });
+  }
 
   private withFileContent = (file: files): FileWithContent => ({
     ...file,
-    content: readFileSync(join(this.rawPath, file.file_path)).toString(),
+    content: readFileSync(join(this.rootPath, file.file_path).replace('\\', '/')).toString(),
   });
 
   private getCourseUniqueWhere = (where: Prisma.filesWhereUniqueInput): Observable<FileWithTags> =>

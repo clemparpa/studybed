@@ -1,7 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
 import { RouterOutlet } from "@angular/router";
 import { MarkdownComponent } from "ngx-markdown";
+import { CourseService } from "./course.service";
 
 @Component({
   selector: "app-root",
@@ -12,6 +14,8 @@ import { MarkdownComponent } from "ngx-markdown";
       <h1 class="text-red-300">Welcome to {{ title }}!</h1>
 
       <markdown katex> $ x^2 + y^2 = z^2 $ </markdown>
+
+      {{ data ?? {} | json }}
     </div>
     <router-outlet></router-outlet>
   `,
@@ -19,4 +23,14 @@ import { MarkdownComponent } from "ngx-markdown";
 })
 export class AppComponent {
   title = "studybed-app";
+
+  private courseService = inject(CourseService);
+
+  // public courses = toSignal(this.courseService.getCourses());
+
+  public data: any = null;
+
+  constructor() {
+    this.courseService.getCourses().subscribe((res) => (this.data = res));
+  }
 }

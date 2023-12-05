@@ -1,3 +1,4 @@
 export const environment = {
-  BACKEND_API: "${BACKEND_API}",
+  BACKEND_BROWSER_API: "${BACKEND_BROWSER_API}",
+  BACKEND_SERVER_API: "${BACKEND_SERVER_API}",
 };

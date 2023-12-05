@@ -22,6 +22,8 @@
     "@angular/platform-server": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@angular/ssr": "^17.0.5",
+    "@ngx-dropzone/cdk": "^17.1.0",
+    "@ngx-dropzone/material": "^17.1.0",
     "emoji-toolkit": "^8.0.0",
     "express": "^4.18.2",
     "katex": "^0.16.9",

@@ -1,13 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { environment } from "../../environment/environment";
 import { CourseModel, ContentCourseModel } from "./models/course.model";
+import { injectBackendAPI } from "../utils/tokens";
 
 @Injectable()
 export class CourseService {
   private http = inject(HttpClient);
 
-  private apiPath = environment.BACKEND_API;
+  private apiPath = injectBackendAPI();
   private coursePath = "course";
 
   public getCourses() {

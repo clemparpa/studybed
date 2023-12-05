@@ -16,7 +16,7 @@ import { CourseListComponent } from "./courses/course-list.component";
       <h1 class="text-red-300">Welcome to {{ title }}!</h1>
     </div>
 
-    <app-course-list [courseList]="courses()"></app-course-list>
+    <!-- <app-course-list [courseList]="courses()"></app-course-list> -->
 
     <router-outlet></router-outlet>
   `,

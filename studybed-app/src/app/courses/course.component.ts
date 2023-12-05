@@ -46,23 +46,4 @@ export class CourseComponent {
     ),
     { initialValue: null }
   );
-
-  // course: Signal<ContentCourseModel | null> = toSignal(
-  //   this.urlPath$.pipe(
-  //     switchMap((urlPath) => this.courseService.getCourseByUrl(urlPath)),
-  //     tap((e) => console.log("course", e))
-  //   ),
-  //   { initialValue: null }
-  // );
-
-  // computedFrom<string | null, CourseModel>(
-  //   [this.courseUrl],
-  //   pipe(
-  //     filter((url_path) => url_path !== null),
-  //     switchMap((url_path) =>
-  //       inject(CourseService).getCourseByUrl(url_path as string)
-  //     )
-  //   ),
-  //   { initialValue: null }
-  // );
 }

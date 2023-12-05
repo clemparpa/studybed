@@ -6,6 +6,8 @@ import { provideMarkdown } from "ngx-markdown";
 import { routes } from "./app.routes";
 import { provideClientHydration } from "@angular/platform-browser";
 import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideBackendAPI } from "./utils/tokens";
+import { environment } from "../environment/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +18,6 @@ export const appConfig: ApplicationConfig = {
       loader: HttpClient,
     }),
     provideAnimations(),
+    provideBackendAPI(environment.BACKEND_BROWSER_API),
   ],
 };

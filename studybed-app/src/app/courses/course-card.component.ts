@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { CourseModel } from "./models/course.model";
 
 @Component({
   selector: "app-course-card",
@@ -15,36 +16,23 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
           class="flex justify-between gap-5 items-start max-md:max-w-full max-md:flex-wrap"
         >
           <div class="text-zinc-800 text-2xl font-semibold whitespace-nowrap">
-            Vecteurs et normes
+            {{ course.metadata.title }}
           </div>
           <div class="text-neutral-700 text-sm italic whitespace-nowrap">
             <span class="text-zinc-800">par:</span>
-            <span class="text-neutral-700">Clement</span>
+            <span class="text-neutral-700">{{ course.metadata.author }}</span>
           </div>
         </div>
         <div
           class="flex items-stretch gap-2.5 mt-2.5 self-start max-md:justify-center"
         >
+          @for( tag of course.metadata.tags; track tag){
           <div
             class="text-neutral-200 text-sm whitespace-nowrap rounded bg-indigo-400 grow justify-center items-stretch px-4 py-2"
           >
-            vecteurs
+            {{ tag }}
           </div>
-          <div
-            class="text-neutral-200 text-sm whitespace-nowrap rounded bg-indigo-400 grow justify-center items-stretch px-4 py-2"
-          >
-            vecteurs
-          </div>
-          <div
-            class="text-neutral-200 text-sm whitespace-nowrap rounded bg-indigo-400 grow justify-center items-stretch px-4 py-2"
-          >
-            vecteurs
-          </div>
-          <div
-            class="text-neutral-200 text-sm whitespace-nowrap rounded bg-indigo-400 grow justify-center items-stretch px-4 py-2"
-          >
-            vecteurs
-          </div>
+          }
         </div>
       </div>
     </div>
@@ -52,4 +40,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CourseCardComponent {}
+export class CourseCardComponent {
+  @Input() course!: CourseModel;
+}

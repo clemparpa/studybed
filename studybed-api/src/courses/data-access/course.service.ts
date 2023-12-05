@@ -6,7 +6,7 @@ import { TagFilter } from '../interfaces/tag-filter.type';
 import { FileService } from 'src/services/file.service';
 import { CourseMetaDataSchema } from '../models/course-metadata.model';
 import { ContentCourseModel, CourseModel } from '../models/course.model';
-import { FileWithTagsModel } from 'src/models/file.model';
+import { FileModel } from 'src/models/file.model';
 
 @Injectable()
 export class CourseService {
@@ -37,22 +37,16 @@ export class CourseService {
     );
   }
 
-  private getCourseUniqueWhere = (where: Prisma.filesWhereUniqueInput): Observable<FileWithTagsModel<string | null>> =>
+  private getCourseUniqueWhere = (where: Prisma.filesWhereUniqueInput): Observable<FileModel<string | null>> =>
     from(
       this.prisma.files.findUniqueOrThrow({
         where,
-        include: {
-          file_tags: true,
-        },
       }),
     );
 
-  private getCoursesWhere = (where: Prisma.filesWhereInput): Observable<FileWithTagsModel<string | null>[]> =>
+  private getCoursesWhere = (where: Prisma.filesWhereInput): Observable<FileModel<string | null>[]> =>
     from(
       this.prisma.files.findMany({
-        include: {
-          file_tags: true,
-        },
         where,
       }),
     );

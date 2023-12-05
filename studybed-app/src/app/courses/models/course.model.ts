@@ -1,5 +1,16 @@
 export type CourseMetaData = {
   title: string;
   tags: string[];
-  url_path: string;
+  author: string;
 };
+
+export type CourseModel = {
+  id: string;
+  file_path: string;
+  extension: string | null;
+  url_path: string;
+  filetype: string | null;
+  metadata: CourseMetaData;
+};
+
+export type ContentCourseModel = CourseModel & { content: string };

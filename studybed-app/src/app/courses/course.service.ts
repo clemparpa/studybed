@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { environment } from "../../environment/environment";
+import { CourseModel } from "./models/course.model";
 
 @Injectable()
 export class CourseService {
@@ -10,7 +11,7 @@ export class CourseService {
   private coursePath = "course";
 
   public getCourses() {
-    return this.http.get(`${this.apiPath}/${this.coursePath}`);
+    return this.http.get<CourseModel[]>(`${this.apiPath}/${this.coursePath}`);
   }
 
   public getCourseByUrl(url_path: string) {

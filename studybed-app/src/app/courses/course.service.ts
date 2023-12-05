@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { environment } from "../../environment/environment";
-import { CourseModel } from "./models/course.model";
+import { CourseModel, ContentCourseModel } from "./models/course.model";
 
 @Injectable()
 export class CourseService {
@@ -15,8 +15,11 @@ export class CourseService {
   }
 
   public getCourseByUrl(url_path: string) {
-    return this.http.get(`${this.apiPath}/${this.coursePath}/where`, {
-      params: { url_path },
-    });
+    return this.http.get<ContentCourseModel>(
+      `${this.apiPath}/${this.coursePath}/where`,
+      {
+        params: { url_path },
+      }
+    );
   }
 }

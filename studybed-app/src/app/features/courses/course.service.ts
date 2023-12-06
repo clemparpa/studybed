@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { CourseModel, ContentCourseModel } from "./models/course.model";
-import { injectBackendAPI } from "../utils/tokens";
+import { injectBackendAPI } from "../../utils/tokens";
 
 @Injectable()
 export class CourseService {

@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { CourseModel } from "./models/course.model";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { CourseModel } from "../models/course.model";
 import { MatListModule } from "@angular/material/list";
 import { MatChipsModule } from "@angular/material/chips";
 import { RouterLink } from "@angular/router";
+import { CourseService } from "../course.service";
 
 @Component({
   selector: "app-course-list",
@@ -10,16 +12,16 @@ import { RouterLink } from "@angular/router";
   imports: [MatListModule, MatChipsModule, RouterLink],
   template: `
     <mat-nav-list class="max-w-4xl">
-      @for( course of courseList; track course.id ){
+      @for( course of courseList(); track course.id ){
       <mat-list-item
         lines="3"
         class="!h-24"
-        [routerLink]="['course', course.url_path]"
+        [routerLink]="['content', course.url_path]"
       >
         <a
           matListItemTitle
           class="pl-2"
-          [routerLink]="['course', course.url_path]"
+          [routerLink]="['content', course.url_path]"
           >{{ course.metadata.title }}</a
         >
         <div>
@@ -44,5 +46,7 @@ import { RouterLink } from "@angular/router";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseListComponent {
-  @Input() courseList: CourseModel[] = [];
+  public courseList = toSignal(inject(CourseService).getCourses(), {
+    initialValue: [],
+  });
 }

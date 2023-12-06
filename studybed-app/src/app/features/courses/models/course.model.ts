@@ -4,6 +4,10 @@ export type CourseMetaData = {
   author: string;
 };
 
+export type CourseForm = CourseMetaData & {
+  content: string;
+};
+
 export type CourseModel = {
   id: string;
   file_path: string;

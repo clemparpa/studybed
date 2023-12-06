@@ -1,31 +1,34 @@
 import { Component, inject } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { CommonModule } from "@angular/common";
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import {
+  ErrorStateMatcher,
+  ShowOnDirtyErrorStateMatcher,
+} from "@angular/material/core";
 import { RouterOutlet } from "@angular/router";
-import { MarkdownComponent } from "ngx-markdown";
-import { CourseService } from "./courses/course.service";
-import { CourseListComponent } from "./courses/course-list.component";
+import { MatToolbarModule } from "@angular/material/toolbar";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MarkdownComponent, CourseListComponent],
-  providers: [CourseService],
+  imports: [RouterOutlet, MatToolbarModule],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: "outline" },
+    },
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+  ],
   template: `
-    <div class="prose lg:prose-xl">
-      <h1 class="text-red-300">Welcome to {{ title }}!</h1>
-    </div>
+    <mat-toolbar color="primary">
+      <span>StudyBed App</span>
+    </mat-toolbar>
 
-    <!-- <app-course-list [courseList]="courses()"></app-course-list> -->
-
-    <router-outlet></router-outlet>
+    <main class="mt-6 w-full flex flex-col items-center justify-start">
+      <router-outlet></router-outlet>
+    </main>
   `,
-  styles: [],
+  styles: `
+  `,
 })
-export class AppComponent {
-  title = "Studybed";
-
-  public courses = toSignal(inject(CourseService).getCourses(), {
-    initialValue: [],
-  });
-}
+export class AppComponent {}

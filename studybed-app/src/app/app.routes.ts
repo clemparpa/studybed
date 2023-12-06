@@ -1,6 +1,9 @@
 import { Routes } from "@angular/router";
-import { CourseComponent } from "./courses/course.component";
 
 export const routes: Routes = [
-  { component: CourseComponent, path: "course/:urlPath" },
+  { path: "", redirectTo: "course", pathMatch: "full" },
+  {
+    path: "course",
+    loadChildren: () => import("./features/courses/course.routes"),
+  },
 ];

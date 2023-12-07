@@ -69,7 +69,8 @@ import { MatInputModule } from "@angular/material/input";
       }
     </mat-form-field>
   `,
-  styles: ``,
+  styles: `
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormChipsInputComponent {

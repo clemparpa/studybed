@@ -8,7 +8,12 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FormInputComponent } from "../../../ui/form-input.component";
 import { FormChipsInputComponent } from "../../../ui/form-chips-input.component";
 import { FormTextareaComponent } from "../../../ui/form-textarea.component";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import {
+  FormControl,
+  FormControlStatus,
+  FormGroup,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { CourseForm } from "../models/course.model";
 import { MatButtonModule } from "@angular/material/button";
 import { tap } from "rxjs";
@@ -24,7 +29,7 @@ import { tap } from "rxjs";
     MatButtonModule,
   ],
   template: `
-    <form [formGroup]="courseForm" class="grid grid-cols-2 gap-4">
+    <form [formGroup]="courseForm" class="w-full grid grid-cols-2 gap-4">
       <app-form-input
         class="col-span-1"
         controlName="title"
@@ -69,14 +74,22 @@ import { tap } from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseFormComponent {
-  @Output() onChange = new EventEmitter<Partial<CourseForm>>();
+  @Output() valueChange = new EventEmitter<Partial<CourseForm>>();
+  @Output() statusChange = new EventEmitter<FormControlStatus>();
 
   public courseForm = new FormGroup({} as GroupType<CourseForm>);
 
   constructor() {
     this.courseForm.valueChanges
       .pipe(
-        tap((value) => this.onChange.emit(value)),
+        tap((value) => this.valueChange.emit(value)),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+
+    this.courseForm.statusChanges
+      .pipe(
+        tap((status) => this.statusChange.emit(status)),
         takeUntilDestroyed()
       )
       .subscribe();

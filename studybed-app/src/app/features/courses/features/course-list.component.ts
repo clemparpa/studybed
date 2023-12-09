@@ -4,7 +4,7 @@ import { CourseModel } from "../models/course.model";
 import { MatListModule } from "@angular/material/list";
 import { MatChipsModule } from "@angular/material/chips";
 import { RouterLink } from "@angular/router";
-import { CourseService } from "../course.service";
+import { CourseService } from "../service/course.service";
 
 @Component({
   selector: "app-course-list",

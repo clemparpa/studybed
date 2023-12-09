@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { switchMap, filter, pipe } from "rxjs";
-import { CourseService } from "../course.service";
+import { CourseService } from "../service/course.service";
 import { MarkdownComponent } from "ngx-markdown";
 import { injectParams } from "ngxtension/inject-params";
 import { computedFrom } from "ngxtension/computed-from";

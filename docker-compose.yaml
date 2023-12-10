@@ -3,15 +3,15 @@ services:
     build: ./studybed-app
     command: "npm run start"
     environment:
-      - PORT=4200
+      - PORT=${FRONTEND_PORT}
       - HOST=0.0.0.0
-      - BACKEND_BROWSER_API=http://localhost:3000
-      - BACKEND_SERVER_API=http://backend:3000
+      - BACKEND_BROWSER_API=http://localhost:${BACKEND_PORT}
+      - BACKEND_SERVER_API=http://backend:${BACKEND_PORT}
     volumes:
       - ./studybed-app:/usr/src/app
       - /usr/src/app/node_modules/
     ports:
-      - "4200:4200"
+      - "4200:${FRONTEND_PORT}"
     depends_on:
       - backend
 
@@ -19,16 +19,27 @@ services:
     build: ./studybed-api
     command: "npm run start:dev"
     environment:
-      - PORT=3000
+      - PORT=${BACKEND_PORT}
       - HOST=0.0.0.0
-      - MARKDOWN_DB_PATH=file:/usr/db/markdowndb/markdown.db
-      - MARKDOWN_DB_ROOT=/usr/db/markdowndb 
-
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-db:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
+      # - MARKDOWN_DB_PATH=file:/usr/db/markdowndb/markdown.db
+      # - MARKDOWN_DB_ROOT=/usr/db/markdowndb 
     volumes:
       - ./studybed-api:/usr/src/app
       - /usr/src/app/node_modules/
-      - ./markdowndb:/usr/db/markdowndb
     ports:
-      - "3000:3000"
+      - "3000:${BACKEND_PORT}"
+    depends_on:
+      - postgres-db
 
-
+  postgres-db:
+    image: postgres
+    volumes:
+      - ./postgres-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}  
+      - POSTGRES_PORT=${POSTGRES_PORT}
+    ports:
+      - "5432:${POSTGRES_PORT}"

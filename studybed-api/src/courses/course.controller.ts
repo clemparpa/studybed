@@ -1,7 +1,6 @@
-import { Controller, Get, Query, UseFilters, Post, Body } from '@nestjs/common';
+import { Controller, Get, Query, UseFilters, Post, Body, ParseIntPipe } from '@nestjs/common';
 import { CourseService } from './data-access/course.service';
 import { createPrismaFilter } from 'src/exception-filters/prisma/create-filter';
-import { Prisma } from '@prisma/client';
 import { TagFilter } from './interfaces/tag-filter.type';
 import { ZodExceptionFilter } from 'src/exception-filters/zod.exception-filter';
 
@@ -12,21 +11,21 @@ export class CourseController {
 
   @Get()
   public getCourses() {
-    return this.courseService.getCourses();
+    return this.courseService.getAllCourses();
   }
 
   @Post('tags')
   public getCoursesByTags(@Body() tagFilter: TagFilter) {
-    return this.courseService.getCourseByTags(tagFilter);
+    return this.courseService.getCoursesByTags(tagFilter);
   }
 
   @Get('where')
-  /**
-   * Retrieves a unique course based on the provided query.
-   *
-   * @param {id | url_path} string - The query used to retrieve the unique course.
-   */
-  public getUniqueCourse(@Query() query: Prisma.filesWhereUniqueInput) {
-    return this.courseService.getCourseWithContent(query);
+  public getCourseByTitle(@Query('title') title: string) {
+    return this.courseService.getCourseByTitle(title);
+  }
+
+  @Get('where')
+  public getCourseById(@Query('id', ParseIntPipe) id: number) {
+    return this.courseService.getCourseById(id);
   }
 }

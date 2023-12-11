@@ -26,8 +26,9 @@ model tag {
 }
 
 model User {
-    id      Int      @id @default(autoincrement())
-    email   String   @unique
-    name    String   @unique
-    courses course[]
+    id       Int      @id @default(autoincrement())
+    email    String   @unique
+    name     String   @unique
+    password String   @db.VarChar(60)
+    courses  course[]
 }

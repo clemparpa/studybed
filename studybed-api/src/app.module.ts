@@ -1,9 +1,14 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { CourseModule } from './features/courses/course.module';
-
+import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [CourseModule],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}

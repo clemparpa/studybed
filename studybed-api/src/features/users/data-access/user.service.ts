@@ -1,25 +1,16 @@
-import { Injectable, HttpException } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto, UserDto } from '../dto/user.dto';
 import { from, map } from 'rxjs';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import * as bcrypt from 'bcrypt';
-import { AuthenticateUserWithCredentialsDto } from './dto/user-credentials.dto';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  public authenticateUserWithCredentials(creds: AuthenticateUserWithCredentialsDto) {
+  public getUserWithCredentials(email_or_password: string) {
     return from(
-      this.prisma.user.findFirstOrThrow({ where: { OR: [{ email: creds.credentials }, { name: creds.credentials }] } }),
-    ).pipe(
-      map((user) => {
-        if (bcrypt.compareSync(creds.password, user.password)) {
-          return new UserDto(user);
-        }
-        throw new HttpException('Invalid credentials', 401);
-      }),
+      this.prisma.user.findFirstOrThrow({ where: { OR: [{ email: email_or_password }, { name: email_or_password }] } }),
     );
   }
 

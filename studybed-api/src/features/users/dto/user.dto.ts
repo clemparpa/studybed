@@ -16,7 +16,7 @@ export class UserDto {
   public name: string;
 
   @Exclude({ toPlainOnly: true })
-  @Transform(({ value }) => bcrypt.hashSync(value, 8))
+  @Transform(({ value }) => bcrypt.hashSync(value, parseInt(process.env.SALT as string)))
   @Length(60, 60)
   public password: string;
 

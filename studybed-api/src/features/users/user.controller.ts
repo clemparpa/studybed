@@ -1,15 +1,19 @@
 import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from './data-access/user.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { AuthenticateUserWithCredentialsDto } from './dto/user-credentials.dto';
+import { AuthService } from './data-access/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   @Post('login')
   public authenticateUserWithCredentials(@Body() credendials: AuthenticateUserWithCredentialsDto) {
-    return this.userService.authenticateUserWithCredentials(credendials);
+    return this.authService.authenticate(credendials);
   }
 
   @Get()

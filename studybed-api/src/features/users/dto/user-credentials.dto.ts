@@ -12,4 +12,8 @@ export class AuthenticateUserWithCredentialsDto {
   @IsString()
   @IsNotEmpty()
   public password: string;
+
+  constructor(partial: AuthenticateUserWithCredentialsDto) {
+    Object.assign(this, partial);
+  }
 }

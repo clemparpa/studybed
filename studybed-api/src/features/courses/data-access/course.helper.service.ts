@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../services/prisma.service';
 import { from, Observable } from 'rxjs';
 import { Prisma, course } from '@prisma/client';
 import { TagFilter } from '../interfaces/tag-filter.type';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class CourseHelperService {

@@ -3,14 +3,10 @@ import { Observable } from 'rxjs';
 import { course } from '@prisma/client';
 import { TagFilter } from '../interfaces/tag-filter.type';
 import { CourseHelperService } from './course.helper.service';
-import { PrismaService } from 'src/services/prisma.service';
 
 @Injectable()
 export class CourseService {
-  constructor(
-    private courseHelper: CourseHelperService,
-    private prisma: PrismaService,
-  ) {}
+  constructor(private courseHelper: CourseHelperService) {}
 
   public getAllCourses(): Observable<course[]> {
     return this.courseHelper.getCourses({});

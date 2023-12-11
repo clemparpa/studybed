@@ -1,6 +1,6 @@
 import { Transform, Exclude } from 'class-transformer';
 import { IsEmail, IsInt, Length, MaxLength, MinLength } from 'class-validator';
-import { OmitType, PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import * as bcrypt from 'bcrypt';
 
 export class UserDto {

@@ -1,22 +1,33 @@
 import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { AuthenticateUserWithCredentialsDto } from './dto/user-credentials.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Post('login')
+  public authenticateUserWithCredentials(@Body() credendials: AuthenticateUserWithCredentialsDto) {
+    return this.userService.authenticateUserWithCredentials(credendials);
+  }
+
   @Get()
+  public getAllUsers() {
+    return this.userService.getAllUsers();
+  }
+
+  @Get('id')
   public getUserById(@Query('id') id: number) {
     return this.userService.getUser({ id });
   }
 
-  @Get()
+  @Get('email/')
   public getUserByEmail(@Query('email') email: string) {
     return this.userService.getUser({ email });
   }
 
-  @Get()
+  @Get('name/')
   public getUserByName(@Query('name') name: string) {
     return this.userService.getUser({ name });
   }
@@ -26,32 +37,32 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Patch()
-  public updateUserById(@Query('id') id: number, @Body() updateUserDto: CreateUserDto) {
+  @Patch('id/')
+  public updateUserById(@Query('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.updateUser({ id }, updateUserDto);
   }
 
-  @Patch()
-  public updateUserByName(@Query('name') name: string, @Body() updateUserDto: CreateUserDto) {
+  @Patch('name/')
+  public updateUserByName(@Query('name') name: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.updateUser({ name }, updateUserDto);
   }
 
-  @Patch()
-  public updateUserByEmail(@Query('email') email: string, @Body() updateUserDto: CreateUserDto) {
+  @Patch('email/')
+  public updateUserByEmail(@Query('email') email: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.updateUser({ email }, updateUserDto);
   }
 
-  @Delete()
+  @Delete('id/')
   public deleteUserById(@Query('id') id: number) {
     return this.userService.deleteUser({ id });
   }
 
-  @Delete()
+  @Delete('name/')
   public deleteUserByName(@Query('name') name: string) {
     return this.userService.deleteUser({ name });
   }
 
-  @Delete()
+  @Delete('email/')
   public deleteUserByEmail(@Query('email') email: string) {
     return this.userService.deleteUser({ email });
   }

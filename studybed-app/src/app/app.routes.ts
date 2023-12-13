@@ -6,4 +6,8 @@ export const routes: Routes = [
     path: "course",
     loadChildren: () => import("./features/courses/course.routes"),
   },
+  {
+    path: "auth",
+    loadChildren: () => import("./features/auth/auth.routes"),
+  },
 ];

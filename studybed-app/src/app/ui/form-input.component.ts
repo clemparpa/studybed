@@ -35,6 +35,7 @@ import { MatInputModule } from "@angular/material/input";
       <mat-label>{{ label }}</mat-label>
       }
       <input
+        [type]="type"
         [formControlName]="controlName"
         [placeholder]="placeholder"
         matInput
@@ -57,6 +58,7 @@ import { MatInputModule } from "@angular/material/input";
 })
 export class FormInputComponent implements OnInit, OnDestroy {
   @Input({ required: true }) controlName!: string;
+  @Input() type: string = "text";
   @Input() label?: string;
   @Input() placeholder: string = "";
   @Input({ transform: booleanAttribute }) required: boolean = false;

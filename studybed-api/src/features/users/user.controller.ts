@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { UserService } from './data-access/user.service';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto, UserEmailDto, UserNameDto } from './dto/user.dto';
+import { PublicRoute } from '../auth/auth.decorators';
 // import { AuthenticateUserWithCredentialsDto } from './dto/user-credentials.dto';
 // import { AuthService } from '../auth/auth.service';
 
@@ -15,6 +16,18 @@ export class UserController {
   // public authenticateUserWithCredentials(@Body() credendials: AuthenticateUserWithCredentialsDto) {
   //   return this.authService.authenticate(credendials);
   // }
+
+  @PublicRoute()
+  @Post('email/exists')
+  public isEmailAlreadyExists(@Body() email: UserEmailDto) {
+    return this.userService.isUserFieldAlreadyExists(email);
+  }
+
+  @PublicRoute()
+  @Post('name/exists')
+  public isNameAlreadyExists(@Body() name: UserNameDto) {
+    return this.userService.isUserFieldAlreadyExists(name);
+  }
 
   @Get()
   public getAllUsers() {
@@ -36,6 +49,7 @@ export class UserController {
     return this.userService.getUser({ name });
   }
 
+  @PublicRoute()
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);

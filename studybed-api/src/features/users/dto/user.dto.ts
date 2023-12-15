@@ -1,6 +1,6 @@
 import { Transform, Exclude } from 'class-transformer';
 import { IsEmail, IsInt, Length, MaxLength, MinLength } from 'class-validator';
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
 import * as bcrypt from 'bcrypt';
 
 export class UserDto {
@@ -24,6 +24,9 @@ export class UserDto {
     Object.assign(this, partial);
   }
 }
+
+export class UserEmailDto extends PickType(UserDto, ['email'] as const) {}
+export class UserNameDto extends PickType(UserDto, ['name'] as const) {}
 
 export class CreateUserDto extends OmitType(UserDto, ['id'] as const) {}
 

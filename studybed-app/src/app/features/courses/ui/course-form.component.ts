@@ -17,6 +17,7 @@ import {
 import { CourseForm } from "../models/course.model";
 import { MatButtonModule } from "@angular/material/button";
 import { tap } from "rxjs";
+import { GroupType } from "../../../utils/group-type";
 
 @Component({
   selector: "app-course-form",
@@ -95,7 +96,3 @@ export class CourseFormComponent {
       .subscribe();
   }
 }
-
-export type GroupType<T> = {
-  [K in keyof T]: FormControl<T[K]>;
-};

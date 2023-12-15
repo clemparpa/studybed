@@ -14,6 +14,10 @@ export class UserService {
     );
   }
 
+  public isUserFieldAlreadyExists(where: Prisma.UserWhereUniqueInput) {
+    return from(this.prisma.user.findUnique({ select: { id: true }, where })).pipe(map((user) => ({ exists: !!user })));
+  }
+
   public getAllUsers() {
     return from(this.prisma.user.findMany()).pipe(map((users) => users.map((user) => new UserDto(user))));
   }

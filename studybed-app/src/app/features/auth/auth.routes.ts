@@ -1,10 +1,12 @@
 import { Routes } from "@angular/router";
 import { AuthShellComponent } from "./auth-shell.component";
+import { UserService } from "../user/user.service";
 
 export default [
   {
     component: AuthShellComponent,
     path: "",
+    providers: [UserService],
     children: [
       {
         path: "",

@@ -6,6 +6,7 @@ import { CreateUserDto } from "../../user/user.model";
 import { IsUserPropsExistsValidator } from "../../user/user.validator";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
+import { AuthService } from "../data-access/auth.service";
 
 @Component({
   selector: "app-sign-up",
@@ -64,9 +65,10 @@ import { RouterLink } from "@angular/router";
 })
 export default class SignUpComponent {
   public userPropsValidator = inject(IsUserPropsExistsValidator);
+  public auth = inject(AuthService);
   public form = new FormGroup({} as GroupType<CreateUserDto>);
 
   public onSubmit(): void {
-    console.log(this.form.value);
+    this.auth.signUp(this.form.value as CreateUserDto).subscribe();
   }
 }
